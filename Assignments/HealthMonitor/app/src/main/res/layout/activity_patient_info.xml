@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_vertical_margin"
+    android:paddingTop="@dimen/activity_horizontal_margin"
+    tools:context="com.nikoo28.healthmonitor.PatientInfoActivity">
+
+    <TextView
+        android:id="@+id/textView_patient_info_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_vertical_margin"
+        android:text="@string/enter_patient_details"
+        android:textSize="@dimen/patient_info_details_heading"
+        android:textStyle="bold" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="2">
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/patient_info_name" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/patient_info_column_padding"
+                android:layout_marginStart="@dimen/patient_info_column_padding"
+                android:text="@string/patient_info_colon" />
+
+            <EditText
+                android:id="@+id/editText_patient_info_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/patient_info_ID" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/patient_info_column_padding"
+                android:layout_marginStart="@dimen/patient_info_column_padding"
+                android:text="@string/patient_info_colon" />
+
+            <EditText
+                android:id="@+id/editText_patient_info_ID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/patient_info_age" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/patient_info_column_padding"
+                android:layout_marginStart="@dimen/patient_info_column_padding"
+                android:text="@string/patient_info_colon" />
+
+            <EditText
+                android:id="@+id/editText_patient_info_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+        </TableRow>
+
+        <TableRow android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/patient_info_sex" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/patient_info_column_padding"
+                android:layout_marginStart="@dimen/patient_info_column_padding"
+                android:text="@string/patient_info_colon" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radioButton_patient_info_sex_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:onClick="onSexSelected"
+                    android:text="@string/patient_info_sex_male" />
+
+                <RadioButton
+                    android:id="@+id/radioButton_patient_info_sex_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onSexSelected"
+                    android:text="@string/patient_info_sex_female" />
+
+            </RadioGroup>
+
+        </TableRow>
+
+    </TableLayout>
+
+    <Button
+        android:id="@+id/button_patient_info_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/splash_button_margin_bottom"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:background="@drawable/buttonshape"
+        android:text="@string/patient_info_submit_details" />
+
+</LinearLayout>

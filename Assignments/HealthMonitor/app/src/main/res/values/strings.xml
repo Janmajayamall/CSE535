@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Health Monitor</string>
+
+    <!-- Splash Screen -->
+    <string name="health_monitoring">Health Monitoring</string>
+    <string name="start_monitoring">START MONITORING</string>
+    <string name="enter_patient_details">Enter Patient Details</string>
+    <string name="patient_info_name">Name</string>
+    <string name="patient_info_ID">ID</string>
+    <string name="patient_info_age">AGE</string>
+    <string name="patient_info_colon">:</string>
+    <string name="patient_info_sex">SEX</string>
+    <string name="patient_info_sex_male">Male</string>
+    <string name="patient_info_sex_female">Female</string>
+    <string name="patient_info_submit_details">Submit Details</string>
+
+
 </resources>
