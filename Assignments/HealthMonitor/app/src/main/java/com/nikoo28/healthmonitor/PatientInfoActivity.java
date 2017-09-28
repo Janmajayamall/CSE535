@@ -8,10 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.nikoo28.Graph.PlotGraphActivity;
+import com.nikoo28.graph.PlotGraphActivity;
 
 public class PatientInfoActivity extends AppCompatActivity {
 
@@ -45,28 +44,31 @@ public class PatientInfoActivity extends AppCompatActivity {
 
                 // Validate name
                 if (patientName.getText().length() < 1) {
-                    CharSequence toastMessage = "Must Enter a Name";
+                    CharSequence toastMessage = "Please enter patient name";
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(applicationContext, toastMessage, duration);
                     toast.show();
-                }
-
-                // Validate age
-                if (patientAge.getText().length() < 1) {
-
-                    CharSequence toastMessage = "Must Enter an Age";
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(applicationContext, toastMessage, duration);
-                    toast.show();
+                    return;
                 }
 
                 // Validate ID
                 if (patientID.getText().length() < 1) {
 
-                    CharSequence toastMessage = "Must insert a numeric Id";
+                    CharSequence toastMessage = "Please enter patient ID";
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(applicationContext, toastMessage, duration);
                     toast.show();
+                    return;
+                }
+
+                // Validate age
+                if (patientAge.getText().length() < 1) {
+
+                    CharSequence toastMessage = "Please enter patient age";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(applicationContext, toastMessage, duration);
+                    toast.show();
+                    return;
                 }
 
                 String name = patientName.getText().toString();

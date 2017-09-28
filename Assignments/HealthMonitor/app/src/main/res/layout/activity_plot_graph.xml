@@ -1,9 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.nikoo28.Graph.PlotGraphActivity">
+    android:paddingLeft="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_vertical_margin"
+    tools:context="com.nikoo28.graph.PlotGraphActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/splash_button_margin_bottom"
+                android:layout_marginEnd="@dimen/column_padding"
+                android:layout_marginStart="@dimen/column_padding"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:background="#43a047"
+                android:paddingRight="@dimen/button_padding"
+                android:paddingStart="@dimen/button_padding"
+                android:text="@string/plot_graph_run" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/splash_button_margin_bottom"
+                android:layout_marginEnd="@dimen/column_padding"
+                android:layout_marginStart="@dimen/column_padding"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:background="#a04643"
+                android:paddingRight="@dimen/button_padding"
+                android:paddingStart="@dimen/button_padding"
+                android:text="@string/plot_graph_stop" />
+
+        </TableRow>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="2">
+
+
+            <TableRow
+                android:layout_marginTop="@dimen/row_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/patient_info_name" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/column_padding"
+                    android:layout_marginStart="@dimen/column_padding"
+                    android:text="@string/colon" />
+
+                <TextView
+                    android:id="@+id/textView_plot_graph_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </TableRow>
+
+            <TableRow
+                android:layout_marginTop="@dimen/row_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/patient_info_ID" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/column_padding"
+                    android:layout_marginStart="@dimen/column_padding"
+                    android:text="@string/colon" />
+
+                <TextView
+                    android:id="@+id/textView_plot_graph_ID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </TableRow>
+
+            <TableRow
+                android:layout_marginTop="@dimen/row_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/patient_info_age" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/column_padding"
+                    android:layout_marginStart="@dimen/column_padding"
+                    android:text="@string/colon" />
+
+                <TextView
+                    android:id="@+id/textView_plot_graph_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_marginTop="@dimen/row_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/patient_info_sex" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/column_padding"
+                    android:layout_marginStart="@dimen/column_padding"
+                    android:text="@string/colon" />
+
+                <TextView
+                    android:id="@+id/textView_plot_graph_sex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </TableRow>
+        </TableLayout>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/splash_button_margin_bottom"
+                android:layout_marginEnd="@dimen/column_padding"
+                android:layout_marginStart="@dimen/column_padding"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:background="#9e9e9e"
+                android:paddingRight="@dimen/button_padding"
+                android:paddingStart="@dimen/button_padding"
+                android:text="@string/plot_graph_upload_db" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/splash_button_margin_bottom"
+                android:layout_marginEnd="@dimen/column_padding"
+                android:layout_marginStart="@dimen/column_padding"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:background="#9e9e9e"
+                android:paddingRight="@dimen/button_padding"
+                android:paddingStart="@dimen/button_padding"
+                android:text="@string/plot_graph_download_db" />
+
+        </TableRow>
+
+    </TableLayout>
+
+</RelativeLayout>

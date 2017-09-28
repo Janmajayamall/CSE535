@@ -37,9 +37,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/patient_info_column_padding"
-                android:layout_marginStart="@dimen/patient_info_column_padding"
-                android:text="@string/patient_info_colon" />
+                android:layout_marginEnd="@dimen/column_padding"
+                android:layout_marginStart="@dimen/column_padding"
+                android:text="@string/colon" />
 
             <EditText
                 android:id="@+id/editText_patient_info_name"
@@ -58,9 +58,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/patient_info_column_padding"
-                android:layout_marginStart="@dimen/patient_info_column_padding"
-                android:text="@string/patient_info_colon" />
+                android:layout_marginEnd="@dimen/column_padding"
+                android:layout_marginStart="@dimen/column_padding"
+                android:text="@string/colon" />
 
             <EditText
                 android:id="@+id/editText_patient_info_ID"
@@ -79,9 +79,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/patient_info_column_padding"
-                android:layout_marginStart="@dimen/patient_info_column_padding"
-                android:text="@string/patient_info_colon" />
+                android:layout_marginEnd="@dimen/column_padding"
+                android:layout_marginStart="@dimen/column_padding"
+                android:text="@string/colon" />
 
             <EditText
                 android:id="@+id/editText_patient_info_age"
@@ -101,9 +101,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/patient_info_column_padding"
-                android:layout_marginStart="@dimen/patient_info_column_padding"
-                android:text="@string/patient_info_colon" />
+                android:layout_marginEnd="@dimen/column_padding"
+                android:layout_marginStart="@dimen/column_padding"
+                android:text="@string/colon" />
 
             <RadioGroup
                 android:layout_width="match_parent"
@@ -138,7 +138,9 @@
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/splash_button_margin_bottom"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:background="@drawable/buttonshape"
+        android:paddingStart="@dimen/button_padding"
+        android:paddingRight="@dimen/button_padding"
+        android:background="#e0e0e0"
         android:text="@string/patient_info_submit_details" />
 
 </LinearLayout>

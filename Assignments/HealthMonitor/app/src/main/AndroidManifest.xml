@@ -16,8 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PatientInfoActivity" />
-        <activity android:name="com.nikoo28.Graph.PlotGraphActivity"></activity>
+        <activity
+            android:name=".PatientInfoActivity"
+            android:label="@string/patient_info" />
+        <activity
+            android:name="com.nikoo28.graph.PlotGraphActivity"
+            android:label="@string/plot_graph" />
     </application>
 
 </manifest>
