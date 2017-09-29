@@ -8,9 +8,17 @@
     android:paddingRight="@dimen/activity_vertical_margin"
     tools:context="com.nikoo28.graph.PlotGraphActivity">
 
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graphView_plot_graph_graph"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginBottom="@dimen/splash_button_margin_bottom"
+        android:layout_marginTop="@dimen/activity_horizontal_margin" />
+
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/graphView_plot_graph_graph"
         android:stretchColumns="*">
 
         <TableRow
@@ -18,6 +26,7 @@
             android:layout_height="wrap_content">
 
             <Button
+                android:id="@+id/button_plot_graph_run"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/splash_button_margin_bottom"
@@ -30,6 +39,7 @@
                 android:text="@string/plot_graph_run" />
 
             <Button
+                android:id="@+id/button_plot_graph_stop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/splash_button_margin_bottom"
@@ -49,8 +59,7 @@
             android:stretchColumns="2">
 
 
-            <TableRow
-                android:layout_marginTop="@dimen/row_padding">
+            <TableRow android:layout_marginTop="@dimen/row_padding">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -70,8 +79,7 @@
                     android:layout_height="wrap_content" />
             </TableRow>
 
-            <TableRow
-                android:layout_marginTop="@dimen/row_padding">
+            <TableRow android:layout_marginTop="@dimen/row_padding">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -91,8 +99,7 @@
                     android:layout_height="wrap_content" />
             </TableRow>
 
-            <TableRow
-                android:layout_marginTop="@dimen/row_padding">
+            <TableRow android:layout_marginTop="@dimen/row_padding">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -113,8 +120,7 @@
 
             </TableRow>
 
-            <TableRow
-                android:layout_marginTop="@dimen/row_padding">
+            <TableRow android:layout_marginTop="@dimen/row_padding">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -141,6 +147,7 @@
             android:layout_height="wrap_content">
 
             <Button
+                android:id="@+id/button_plot_graph_upload_db"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/splash_button_margin_bottom"
@@ -153,6 +160,7 @@
                 android:text="@string/plot_graph_upload_db" />
 
             <Button
+                android:id="@+id/button_plot_graph_download_db"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/splash_button_margin_bottom"
