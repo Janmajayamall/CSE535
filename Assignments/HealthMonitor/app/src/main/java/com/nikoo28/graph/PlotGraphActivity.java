@@ -10,6 +10,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import com.nikoo28.bean.Accelerometer;
 import com.nikoo28.bean.Patient;
 import com.nikoo28.db.sqllite.PatientDBHelper;
 import com.nikoo28.healthmonitor.R;
+import com.nikoo28.server.DownloadFromServer;
 import com.nikoo28.server.UploadToServer;
 
 import java.io.File;
@@ -39,6 +41,8 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
     public static final int SCALE_FACTOR = 10;
     public static final int OFFSET = Y_AXIS_UPPER_LIMIT / 2;
     private static final long ACCELEROMETER_FREQUENCY = 1000;
+    private static final String DOWNLOAD_FOLDER_NAME = "CSE535_ASSIGNMENT2_Extra/";
+    public static final String DB_NAME = "GROUP9.db";
 
     private TextView patientName;
     private TextView patientAge;
@@ -59,7 +63,7 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
     private Patient patientBean;
     private PatientDBHelper patientDBHelper;
     private int startPoint = 0;
-    private boolean isVitalMeasuring = true;
+    private boolean isVitalMeasuring = false;
     private boolean isReadyForNextSet;
 
     // Accelerometer members
@@ -70,8 +74,6 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plot_graph);
-
-        Context applicationContext = getApplicationContext();
 
         // Setup all references to UI elements
         patientName = (TextView) findViewById(R.id.textView_plot_graph_name);
@@ -84,6 +86,7 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
         runButton = (Button) findViewById(R.id.button_plot_graph_run);
         stopButton = (Button) findViewById(R.id.button_plot_graph_stop);
         uploadDbButton = (Button) findViewById(R.id.button_plot_graph_upload_db);
+        uploadDbButton.setEnabled(false);
         downloadDbButton = (Button) findViewById(R.id.button_plot_graph_download_db);
 
         // Instantiate data series
@@ -141,6 +144,13 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
         runButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Get db information from patient bean
+                patientDBHelper = new PatientDBHelper(getApplicationContext(),
+                        patientBean.getName(), patientBean.getID(), patientBean.getAge(), patientBean.getSex());
+
+                uploadDbButton.setEnabled(true);
+                downloadDbButton.setEnabled(false);
+                plotGraph(patientDBHelper);
                 isVitalMeasuring = true;
             }
         });
@@ -158,7 +168,7 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
             public void onClick(View v) {
                 try {
                     UploadToServer uploadToServer = new UploadToServer();
-                    File database = getApplicationContext().getDatabasePath("patient.db");
+                    File database = getApplicationContext().getDatabasePath(DB_NAME);
                     uploadToServer.execute(database);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -166,10 +176,33 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
             }
         });
 
-        // Get db information from patient bean
-        patientDBHelper = new PatientDBHelper(this,
-                patientBean.getName(), patientBean.getID(), patientBean.getAge(), patientBean.getSex());
+        downloadDbButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String fileName = DB_NAME;
 
+                String filePath = getApplicationContext().getExternalFilesDir(null).getAbsolutePath()
+                        + "/" + DOWNLOAD_FOLDER_NAME;
+
+                Log.d(TAG, "PATH = " + filePath);
+
+                File directory = new File(filePath);
+                if (!directory.exists()) {
+                    directory.mkdir();
+                }
+                DownloadFromServer downloadFromServer = new DownloadFromServer(fileName, filePath);
+                downloadFromServer.execute("");
+                patientDBHelper = new PatientDBHelper(getApplicationContext(),
+                        patientBean.getName(), patientBean.getID(), patientBean.getAge(), patientBean.getSex(),
+                        DOWNLOAD_FOLDER_NAME);
+
+                isVitalMeasuring = true;
+                plotGraph(patientDBHelper);
+            }
+        });
+    }
+
+    private void plotGraph(PatientDBHelper patientDBHelper) {
         List<Accelerometer> accelerometerBeanHistory = null;
 
         // Try to fetch the patient history
@@ -185,7 +218,7 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
                 e.printStackTrace();
 
                 // We were unable to create a database. This case should not occur.
-                Toast.makeText(applicationContext, "UNABLE TO CREATE TABLE", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "UNABLE TO CREATE TABLE", Toast.LENGTH_SHORT).show();
             }
         }
 

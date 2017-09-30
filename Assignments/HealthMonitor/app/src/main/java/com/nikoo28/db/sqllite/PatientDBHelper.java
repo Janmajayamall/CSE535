@@ -16,21 +16,32 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.nikoo28.graph.PlotGraphActivity.DB_NAME;
+
 /**
  * Created by nikoo28 on 9/29/17.
  */
 
 public class PatientDBHelper extends SQLiteOpenHelper {
 
-    public static final String TAG = "PATEINT_DB_HELPER";
-
-    public static final String DB_NAME = "patient.db";
+    public static final String TAG = "PATIENT_DB_HELPER";
 
     private String name;
     private int age;
     private int ID;
     private String sex;
     private String patientTableName;
+
+    public PatientDBHelper(Context context, String patientName, int patientId, int patientAge, String patientSex, String folderName) {
+
+        super(context, context.getExternalFilesDir(null).getAbsolutePath() + "/" + folderName + DB_NAME, null, 1);
+
+        this.name = patientName;
+        this.age = patientAge;
+        this.ID = patientId;
+        this.sex = patientSex;
+        patientTableName = this.name + "_" + this.ID + "_" + this.age + "_" + this.sex;
+    }
 
     public PatientDBHelper(Context context, String patientName, int patientId, int patientAge, String patientSex) {
         super(context, DB_NAME, null, 1);

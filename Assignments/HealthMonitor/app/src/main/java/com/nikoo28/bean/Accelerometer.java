@@ -9,6 +9,8 @@ import java.util.Date;
 
 public class Accelerometer {
 
+    public static final String TAG = "ACCELEROMETER_BEAN";
+
     private float x;
     private float y;
     private float z;

@@ -33,7 +33,7 @@
                 android:layout_marginEnd="@dimen/column_padding"
                 android:layout_marginStart="@dimen/column_padding"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:background="#43a047"
+                android:background="@drawable/greenbutton"
                 android:paddingRight="@dimen/button_padding"
                 android:paddingStart="@dimen/button_padding"
                 android:text="@string/plot_graph_run" />
@@ -46,7 +46,7 @@
                 android:layout_marginEnd="@dimen/column_padding"
                 android:layout_marginStart="@dimen/column_padding"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:background="#a04643"
+                android:background="@drawable/redbutton"
                 android:paddingRight="@dimen/button_padding"
                 android:paddingStart="@dimen/button_padding"
                 android:text="@string/plot_graph_stop" />
@@ -154,7 +154,6 @@
                 android:layout_marginEnd="@dimen/column_padding"
                 android:layout_marginStart="@dimen/column_padding"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:background="#9e9e9e"
                 android:paddingRight="@dimen/button_padding"
                 android:paddingStart="@dimen/button_padding"
                 android:text="@string/plot_graph_upload_db" />
@@ -167,7 +166,6 @@
                 android:layout_marginEnd="@dimen/column_padding"
                 android:layout_marginStart="@dimen/column_padding"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:background="#9e9e9e"
                 android:paddingRight="@dimen/button_padding"
                 android:paddingStart="@dimen/button_padding"
                 android:text="@string/plot_graph_download_db" />

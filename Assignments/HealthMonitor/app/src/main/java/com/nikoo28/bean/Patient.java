@@ -6,6 +6,8 @@ package com.nikoo28.bean;
 
 public class Patient {
 
+    public static final String TAG = "PATIENT_BEAN";
+
     private String name;
     private int age;
     private int ID;
