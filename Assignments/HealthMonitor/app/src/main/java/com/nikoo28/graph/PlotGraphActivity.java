@@ -128,7 +128,7 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
         }
 
         // customize a little bit viewport
-        Viewport graphViewport = graphView.getViewport();
+        final Viewport graphViewport = graphView.getViewport();
         graphViewport.setScrollable(true);
         graphViewport.setYAxisBoundsManual(true);
         graphViewport.setMinY(Y_AXIS_LOWER_LIMIT);
@@ -163,6 +163,7 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
             @Override
             public void onClick(View v) {
 
+                graphView.setVisibility(View.VISIBLE);
                 uploadDbButton.setEnabled(true);
                 downloadDbButton.setEnabled(false);
                 isVitalMeasuring = true;
@@ -174,6 +175,7 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
             public void onClick(View v) {
                 isVitalMeasuring = false;
                 isReadyForNextSet = false;
+                graphView.setVisibility(View.INVISIBLE);
             }
         });
 

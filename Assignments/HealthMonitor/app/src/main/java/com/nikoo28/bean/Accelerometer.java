@@ -62,4 +62,14 @@ public class Accelerometer {
     public void setZ(float z) {
         this.z = z;
     }
+
+    @Override
+    public String toString() {
+        return "Accelerometer{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }
