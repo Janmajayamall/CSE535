@@ -8,6 +8,15 @@
     android:paddingRight="@dimen/activity_vertical_margin"
     tools:context="com.nikoo28.graph.PlotGraphActivity">
 
+    <TextView
+        android:id="@+id/textView_plot_graph_vitals"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginBottom="@dimen/splash_button_margin_bottom"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:gravity="center"
+        android:text="@string/plot_graph_resume_vitals" />
+
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graphView_plot_graph_graph"
         android:layout_width="match_parent"
@@ -16,6 +25,7 @@
         android:layout_marginTop="@dimen/activity_horizontal_margin" />
 
     <TableLayout
+        android:id="@+id/tableLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/graphView_plot_graph_graph"
@@ -142,36 +152,26 @@
             </TableRow>
         </TableLayout>
 
-        <TableRow
+        <Button
+            android:id="@+id/button_plot_graph_upload_db"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/button_plot_graph_upload_db"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/splash_button_margin_bottom"
-                android:layout_marginEnd="@dimen/column_padding"
-                android:layout_marginStart="@dimen/column_padding"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/button_padding"
-                android:paddingStart="@dimen/button_padding"
-                android:text="@string/plot_graph_upload_db" />
-
-            <Button
-                android:id="@+id/button_plot_graph_download_db"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/splash_button_margin_bottom"
-                android:layout_marginEnd="@dimen/column_padding"
-                android:layout_marginStart="@dimen/column_padding"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/button_padding"
-                android:paddingStart="@dimen/button_padding"
-                android:text="@string/plot_graph_download_db" />
-
-        </TableRow>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/splash_button_margin_bottom"
+            android:layout_marginEnd="@dimen/column_padding"
+            android:layout_marginStart="@dimen/column_padding"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/button_padding"
+            android:paddingStart="@dimen/button_padding"
+            android:text="@string/plot_graph_upload_db" />
 
     </TableLayout>
+
+    <TextView
+        android:id="@+id/textView_plot_graph_uploadDB_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tableLayout"
+        android:layout_centerHorizontal="true"
+        android:text="@string/plot_graph_info" />
 
 </RelativeLayout>

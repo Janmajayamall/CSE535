@@ -17,12 +17,14 @@
     <string name="patient_info_sex_male">Male</string>
     <string name="patient_info_sex_female">Female</string>
     <string name="patient_info_submit_details">Submit Details</string>
+    <string name="patient_info_download_db">DOWNLOAD DB</string>
 
     <!-- Plot Graph -->
     <string name="plot_graph_run">RUN</string>
     <string name="plot_graph_stop">STOP</string>
     <string name="plot_graph_upload_db">UPLOAD DB</string>
-    <string name="plot_graph_download_db">DOWNLOAD DB</string>
+    <string name="plot_graph_info">Stop the Graph to enable UPLOAD DB</string>
+    <string name="plot_graph_resume_vitals">Press RUN to resume monitoring Vitals</string>
 
 
 </resources>

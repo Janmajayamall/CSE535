@@ -138,9 +138,21 @@
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/splash_button_margin_bottom"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/button_padding"
-        android:paddingRight="@dimen/button_padding"
         android:background="#e0e0e0"
+        android:paddingRight="@dimen/button_padding"
+        android:paddingStart="@dimen/button_padding"
         android:text="@string/patient_info_submit_details" />
+
+    <Button
+        android:id="@+id/button_plot_graph_download_db"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/splash_button_margin_bottom"
+        android:layout_marginEnd="@dimen/column_padding"
+        android:layout_marginStart="@dimen/column_padding"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/button_padding"
+        android:paddingStart="@dimen/button_padding"
+        android:text="@string/patient_info_download_db" />
 
 </LinearLayout>

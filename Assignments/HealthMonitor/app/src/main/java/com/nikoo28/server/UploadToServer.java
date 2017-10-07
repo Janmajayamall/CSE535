@@ -1,8 +1,12 @@
 package com.nikoo28.server;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.nikoo28.graph.PlotGraphActivity;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -39,6 +43,13 @@ public class UploadToServer extends AsyncTask<File, Void, Void> {
     public static final String TAG = "UPLOAD_TO_SERVER";
 
     public static final String UPLOAD_URI = "http://10.218.110.136/CSE535Fall17Folder/UploadToServer.php";
+
+    Activity mActivity;
+    private boolean uploaded = true;
+
+    public UploadToServer(PlotGraphActivity plotGraphActivity) {
+        this.mActivity = plotGraphActivity;
+    }
 
     /**
      * @param params[0] - Db to upload
@@ -80,8 +91,10 @@ public class UploadToServer extends AsyncTask<File, Void, Void> {
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
         } catch (KeyManagementException e) {
             e.printStackTrace();
+            uploaded = false;
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
+            uploaded = false;
         }
 
         HttpURLConnection httpURLConnection = null;
@@ -108,6 +121,7 @@ public class UploadToServer extends AsyncTask<File, Void, Void> {
                 httpURLConnection.setDoInput(true); // Allow Inputs
                 httpURLConnection.setDoOutput(true); // Allow Outputs
                 httpURLConnection.setUseCaches(false); // Don't use a Cached Copy
+                httpURLConnection.setConnectTimeout(10000); // Only try to upload within 10 seconds
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setRequestProperty("Connection", "Keep-Alive");
                 httpURLConnection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
@@ -157,15 +171,29 @@ public class UploadToServer extends AsyncTask<File, Void, Void> {
                 ex.printStackTrace();
 
                 Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
+                uploaded = false;
             } catch (Exception e) {
 
                 //dialog.dismiss();
                 e.printStackTrace();
                 Log.e("Upload file Exception", "Exception : " + e.getMessage(), e);
+                uploaded = false;
             }
             // dialog.dismiss();
 
         } // End else block
         return serverResponseCode;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+
+        if (uploaded) {
+            Toast.makeText(mActivity.getApplicationContext(), "File Uploaded", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(mActivity.getApplicationContext(), "Failed to upload file", Toast.LENGTH_SHORT).show();
+
+        }
     }
 }

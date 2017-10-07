@@ -24,7 +24,6 @@ import com.nikoo28.bean.Accelerometer;
 import com.nikoo28.bean.Patient;
 import com.nikoo28.db.sqllite.PatientDBHelper;
 import com.nikoo28.healthmonitor.R;
-import com.nikoo28.server.DownloadFromServer;
 import com.nikoo28.server.UploadToServer;
 
 import java.io.File;
@@ -35,13 +34,13 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
     public static final String TAG = "PLOT_GRAPH_ACTIVITY";
 
     public static final int X_AXIS_LOWER_LIMIT = 0;
-    public static final int X_AXIS_UPPER_LIMIT = 40;
+    public static final int X_AXIS_UPPER_LIMIT = 30;
     public static final int Y_AXIS_LOWER_LIMIT = 0;
     public static final int Y_AXIS_UPPER_LIMIT = 100;
     public static final int SCALE_FACTOR = 10;
     public static final int OFFSET = Y_AXIS_UPPER_LIMIT / 2;
     private static final long ACCELEROMETER_FREQUENCY = 1000;
-    private static final String DOWNLOAD_FOLDER_NAME = "CSE535_ASSIGNMENT2_Extra/";
+    public static final String DOWNLOAD_FOLDER_NAME = "CSE535_ASSIGNMENT2_Extra/";
     public static final String SAVE_FOLDER_NAME = "CSE535_ASSIGNMENT2/";
     public static final String DB_NAME = "GROUP9.db";
 
@@ -49,6 +48,8 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
     private TextView patientAge;
     private TextView patientID;
     private TextView patientSex;
+    private TextView vitalsText;
+    private TextView uploadDBInfo;
 
     private GraphView graphView;
 
@@ -59,13 +60,13 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
     private Button runButton;
     private Button stopButton;
     private Button uploadDbButton;
-    private Button downloadDbButton;
 
     private Patient patientBean;
     private PatientDBHelper patientDBHelper;
     private int startPoint = 0;
-    private boolean isVitalMeasuring = false;
+    private boolean isVitalMeasuring = true;
     private boolean isReadyForNextSet;
+    private boolean useDownloadedInformation = false;
 
     // Accelerometer members
     private SensorManager sensorManager;
@@ -76,11 +77,15 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plot_graph);
 
+        isReadyForNextSet = false;
+
         // Setup all references to UI elements
         patientName = (TextView) findViewById(R.id.textView_plot_graph_name);
         patientAge = (TextView) findViewById(R.id.textView_plot_graph_age);
         patientID = (TextView) findViewById(R.id.textView_plot_graph_ID);
         patientSex = (TextView) findViewById(R.id.textView_plot_graph_sex);
+        vitalsText = (TextView) findViewById(R.id.textView_plot_graph_vitals);
+        uploadDBInfo = (TextView) findViewById(R.id.textView_plot_graph_uploadDB_info);
 
         graphView = (GraphView) findViewById(R.id.graphView_plot_graph_graph);
 
@@ -88,7 +93,6 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
         stopButton = (Button) findViewById(R.id.button_plot_graph_stop);
         uploadDbButton = (Button) findViewById(R.id.button_plot_graph_upload_db);
         uploadDbButton.setEnabled(false);
-        downloadDbButton = (Button) findViewById(R.id.button_plot_graph_download_db);
 
         // Instantiate data series
         seriesX = new LineGraphSeries<>();
@@ -103,6 +107,18 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
         graphView.addSeries(seriesY);
         graphView.addSeries(seriesZ);
 
+        vitalsText.setVisibility(View.INVISIBLE);
+
+        // customize a little bit viewport
+        final Viewport graphViewport = graphView.getViewport();
+        graphViewport.setScrollable(true);
+        graphViewport.setYAxisBoundsManual(true);
+        graphViewport.setMinY(Y_AXIS_LOWER_LIMIT);
+        graphViewport.setMaxY(Y_AXIS_UPPER_LIMIT);
+        graphViewport.setXAxisBoundsManual(true);
+        graphViewport.setMinX(X_AXIS_LOWER_LIMIT);
+        graphViewport.setMaxX(X_AXIS_UPPER_LIMIT);
+
         // Fetch patient data from the previous activity
         try {
             Intent patientInfoIntent = getIntent();
@@ -111,6 +127,7 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
                 int age = patientInfoIntent.getIntExtra("PATIENT_AGE", 0);
                 int id = patientInfoIntent.getIntExtra("PATIENT_ID", 0);
                 String sex = patientInfoIntent.getStringExtra("PATIENT_SEX");
+                useDownloadedInformation = patientInfoIntent.getBooleanExtra("DOWNLOADED_CONTENT", false);
 
                 patientBean = new Patient(name, age, id, sex);
             }
@@ -127,107 +144,36 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
             e.printStackTrace();
         }
 
-        // customize a little bit viewport
-        final Viewport graphViewport = graphView.getViewport();
-        graphViewport.setScrollable(true);
-        graphViewport.setYAxisBoundsManual(true);
-        graphViewport.setMinY(Y_AXIS_LOWER_LIMIT);
-        graphViewport.setMaxY(Y_AXIS_UPPER_LIMIT);
-        graphViewport.setXAxisBoundsManual(true);
-        graphViewport.setMinX(X_AXIS_LOWER_LIMIT);
-        graphViewport.setMaxX(X_AXIS_UPPER_LIMIT);
-
         // Setup mobile sensors
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
-        String filePath = getApplicationContext().getExternalFilesDir(null).getAbsolutePath()
+        String saveFilePath = getApplicationContext().getExternalFilesDir(null).getAbsolutePath()
                 + "/" + SAVE_FOLDER_NAME;
 
-        Log.d(TAG, "SAVE PATH = " + filePath);
+        String downloadFilePath = getApplicationContext().getExternalFilesDir(null).getAbsolutePath()
+                + "/" + DOWNLOAD_FOLDER_NAME;
 
-        File directory = new File(filePath);
+        Log.d(TAG, "SAVE PATH = " + saveFilePath);
+
+        File directory = new File(saveFilePath);
         if (!directory.exists()) {
             directory.mkdir();
         }
 
+        File downloadedFile = new File(downloadFilePath + DB_NAME);
+
         // Get db information from patient bean
-        patientDBHelper = new PatientDBHelper(getApplicationContext(),
-                patientBean.getName(), patientBean.getID(), patientBean.getAge(), patientBean.getSex(),
-                SAVE_FOLDER_NAME);
+        if (useDownloadedInformation && downloadedFile.exists()) {
+            patientDBHelper = new PatientDBHelper(getApplicationContext(),
+                    patientBean.getName(), patientBean.getID(), patientBean.getAge(), patientBean.getSex(),
+                    DOWNLOAD_FOLDER_NAME);
+        } else
+            patientDBHelper = new PatientDBHelper(getApplicationContext(),
+                    patientBean.getName(), patientBean.getID(), patientBean.getAge(), patientBean.getSex(),
+                    SAVE_FOLDER_NAME);
 
-        plotGraph(patientDBHelper, false);
-
-        runButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                graphView.setVisibility(View.VISIBLE);
-                uploadDbButton.setEnabled(true);
-                downloadDbButton.setEnabled(false);
-                isVitalMeasuring = true;
-            }
-        });
-
-        stopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isVitalMeasuring = false;
-                isReadyForNextSet = false;
-                graphView.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        uploadDbButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    UploadToServer uploadToServer = new UploadToServer();
-                    String uploadFile = getApplicationContext().getExternalFilesDir(null).getAbsolutePath()
-                            + "/" + SAVE_FOLDER_NAME + DB_NAME;
-                    File database = new File(uploadFile);
-                    uploadToServer.execute(database);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        downloadDbButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                isVitalMeasuring = true;
-
-                String filePath = getApplicationContext().getExternalFilesDir(null).getAbsolutePath()
-                        + "/" + DOWNLOAD_FOLDER_NAME;
-
-                Log.d(TAG, "PATH = " + filePath);
-
-                File directory = new File(filePath);
-                if (!directory.exists()) {
-                    directory.mkdir();
-                }
-                DownloadFromServer downloadFromServer = new DownloadFromServer(DB_NAME, filePath);
-                downloadFromServer.execute("");
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                patientDBHelper = new PatientDBHelper(getApplicationContext(),
-                        patientBean.getName(), patientBean.getID(), patientBean.getAge(), patientBean.getSex(),
-                        DOWNLOAD_FOLDER_NAME);
-
-                plotGraph(patientDBHelper, true);
-                downloadDbButton.setEnabled(false);
-                uploadDbButton.setEnabled(true);
-            }
-        });
-    }
-
-    private void plotGraph(PatientDBHelper patientDBHelper, boolean isDownloaded) {
         List<Accelerometer> accelerometerBeanHistory = null;
 
         // Try to fetch the patient history
@@ -235,11 +181,6 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
             accelerometerBeanHistory = patientDBHelper.getAllHistory();
         } catch (SQLiteException sqlException) {
             sqlException.printStackTrace();
-
-            if (isDownloaded) {
-                Toast.makeText(getApplicationContext(), "NO HISTORY FOUND", Toast.LENGTH_SHORT).show();
-                finish();
-            }
 
             // Since no history is available we need to create the DB
             try {
@@ -252,11 +193,6 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
             }
         }
 
-        if ((accelerometerBeanHistory == null || accelerometerBeanHistory.size() == 0) && isDownloaded) {
-            Toast.makeText(getApplicationContext(), "NO HISTORY FOUND", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-
         // If we got some records, we need to populate it to graph
         if (accelerometerBeanHistory != null) {
             for (Accelerometer accelerometerBean : accelerometerBeanHistory) {
@@ -265,17 +201,58 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
                 int zValue = (int) ((accelerometerBean.getZ() * SCALE_FACTOR) - OFFSET);
                 addEntryToGraph(xValue, yValue, zValue);
             }
-
         }
+
+        runButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                graphView.setVisibility(View.VISIBLE);
+                vitalsText.setVisibility(View.INVISIBLE);
+                uploadDBInfo.setVisibility(View.VISIBLE);
+                uploadDbButton.setEnabled(false);
+                isVitalMeasuring = true;
+            }
+        });
+
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                isVitalMeasuring = false;
+                isReadyForNextSet = false;
+                uploadDbButton.setEnabled(true);
+                graphView.setVisibility(View.INVISIBLE);
+                vitalsText.setVisibility(View.VISIBLE);
+                uploadDBInfo.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        uploadDbButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    UploadToServer uploadToServer = new UploadToServer(PlotGraphActivity.this);
+                    String uploadFile = getApplicationContext().getExternalFilesDir(null).getAbsolutePath()
+                            + "/" + SAVE_FOLDER_NAME + DB_NAME;
+                    File database = new File(uploadFile);
+                    uploadToServer.execute(database);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
 
     }
 
     private void addEntryToGraph(int xValue, int yValue, int zValue) {
+
         if (isVitalMeasuring) {
             seriesX.appendData(new DataPoint(startPoint++, xValue), true, X_AXIS_UPPER_LIMIT);
             seriesY.appendData(new DataPoint(startPoint++, yValue), true, X_AXIS_UPPER_LIMIT);
             seriesZ.appendData(new DataPoint(startPoint++, zValue), true, X_AXIS_UPPER_LIMIT);
-
         }
     }
 
