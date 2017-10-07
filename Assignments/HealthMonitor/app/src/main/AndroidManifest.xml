@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nikoo28.healthmonitor">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
@@ -9,7 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,10 +21,12 @@
         </activity>
         <activity
             android:name=".PatientInfoActivity"
-            android:label="@string/patient_info" />
+            android:label="@string/patient_info"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.nikoo28.graph.PlotGraphActivity"
-            android:label="@string/plot_graph" />
+            android:label="@string/plot_graph"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -43,16 +43,6 @@ public class PatientDBHelper extends SQLiteOpenHelper {
         patientTableName = this.name + "_" + this.ID + "_" + this.age + "_" + this.sex;
     }
 
-    public PatientDBHelper(Context context, String patientName, int patientId, int patientAge, String patientSex) {
-        super(context, DB_NAME, null, 1);
-
-        this.name = patientName;
-        this.age = patientAge;
-        this.ID = patientId;
-        this.sex = patientSex;
-        patientTableName = this.name + "_" + this.ID + "_" + this.age + "_" + this.sex;
-    }
-
     // run query to create the table
     @Override
     public void onCreate(SQLiteDatabase db) {

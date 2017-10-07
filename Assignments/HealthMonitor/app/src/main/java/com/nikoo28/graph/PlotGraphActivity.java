@@ -42,7 +42,8 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
     public static final int OFFSET = Y_AXIS_UPPER_LIMIT / 2;
     private static final long ACCELEROMETER_FREQUENCY = 1000;
     private static final String DOWNLOAD_FOLDER_NAME = "CSE535_ASSIGNMENT2_Extra/";
-    public static final String DB_NAME = "GROUP9.db";
+    public static final String SAVE_FOLDER_NAME = "CSE535_ASSIGNMENT2/";
+    public static final String DB_NAME = "DOPE.db";
 
     private TextView patientName;
     private TextView patientAge;
@@ -141,16 +142,29 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
         accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
+        String filePath = getApplicationContext().getExternalFilesDir(null).getAbsolutePath()
+                + "/" + SAVE_FOLDER_NAME;
+
+        Log.d(TAG, "SAVE PATH = " + filePath);
+
+        File directory = new File(filePath);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+
+        // Get db information from patient bean
+        patientDBHelper = new PatientDBHelper(getApplicationContext(),
+                patientBean.getName(), patientBean.getID(), patientBean.getAge(), patientBean.getSex(),
+                SAVE_FOLDER_NAME);
+
+        plotGraph(patientDBHelper);
+
         runButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get db information from patient bean
-                patientDBHelper = new PatientDBHelper(getApplicationContext(),
-                        patientBean.getName(), patientBean.getID(), patientBean.getAge(), patientBean.getSex());
 
                 uploadDbButton.setEnabled(true);
                 downloadDbButton.setEnabled(false);
-                plotGraph(patientDBHelper);
                 isVitalMeasuring = true;
             }
         });
@@ -168,7 +182,9 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
             public void onClick(View v) {
                 try {
                     UploadToServer uploadToServer = new UploadToServer();
-                    File database = getApplicationContext().getDatabasePath(DB_NAME);
+                    String uploadFile = getApplicationContext().getExternalFilesDir(null).getAbsolutePath()
+                            + "/" + SAVE_FOLDER_NAME + DB_NAME;
+                    File database = new File(uploadFile);
                     uploadToServer.execute(database);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -179,7 +195,8 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
         downloadDbButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String fileName = DB_NAME;
+
+                isVitalMeasuring = true;
 
                 String filePath = getApplicationContext().getExternalFilesDir(null).getAbsolutePath()
                         + "/" + DOWNLOAD_FOLDER_NAME;
@@ -190,14 +207,15 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
                 if (!directory.exists()) {
                     directory.mkdir();
                 }
-                DownloadFromServer downloadFromServer = new DownloadFromServer(fileName, filePath);
+                DownloadFromServer downloadFromServer = new DownloadFromServer(DB_NAME, filePath);
                 downloadFromServer.execute("");
                 patientDBHelper = new PatientDBHelper(getApplicationContext(),
                         patientBean.getName(), patientBean.getID(), patientBean.getAge(), patientBean.getSex(),
                         DOWNLOAD_FOLDER_NAME);
 
-                isVitalMeasuring = true;
                 plotGraph(patientDBHelper);
+                downloadDbButton.setEnabled(false);
+                uploadDbButton.setEnabled(true);
             }
         });
     }
