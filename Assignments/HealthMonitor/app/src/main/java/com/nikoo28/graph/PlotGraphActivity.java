@@ -157,7 +157,7 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
                 patientBean.getName(), patientBean.getID(), patientBean.getAge(), patientBean.getSex(),
                 SAVE_FOLDER_NAME);
 
-        plotGraph(patientDBHelper);
+        plotGraph(patientDBHelper, false);
 
         runButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,18 +209,23 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
                 }
                 DownloadFromServer downloadFromServer = new DownloadFromServer(DB_NAME, filePath);
                 downloadFromServer.execute("");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 patientDBHelper = new PatientDBHelper(getApplicationContext(),
                         patientBean.getName(), patientBean.getID(), patientBean.getAge(), patientBean.getSex(),
                         DOWNLOAD_FOLDER_NAME);
 
-                plotGraph(patientDBHelper);
+                plotGraph(patientDBHelper, true);
                 downloadDbButton.setEnabled(false);
                 uploadDbButton.setEnabled(true);
             }
         });
     }
 
-    private void plotGraph(PatientDBHelper patientDBHelper) {
+    private void plotGraph(PatientDBHelper patientDBHelper, boolean isDownloaded) {
         List<Accelerometer> accelerometerBeanHistory = null;
 
         // Try to fetch the patient history
@@ -228,6 +233,11 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
             accelerometerBeanHistory = patientDBHelper.getAllHistory();
         } catch (SQLiteException sqlException) {
             sqlException.printStackTrace();
+
+            if (isDownloaded) {
+                Toast.makeText(getApplicationContext(), "NO HISTORY FOUND", Toast.LENGTH_SHORT).show();
+                finish();
+            }
 
             // Since no history is available we need to create the DB
             try {
@@ -238,6 +248,11 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
                 // We were unable to create a database. This case should not occur.
                 Toast.makeText(getApplicationContext(), "UNABLE TO CREATE TABLE", Toast.LENGTH_SHORT).show();
             }
+        }
+
+        if (accelerometerBeanHistory == null && isDownloaded) {
+            Toast.makeText(getApplicationContext(), "NO HISTORY FOUND", Toast.LENGTH_SHORT).show();
+            finish();
         }
 
         // If we got some records, we need to populate it to graph
