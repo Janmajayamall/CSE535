@@ -19,6 +19,7 @@ import java.io.File;
 
 import static com.nikoo28.graph.PlotGraphActivity.DB_NAME;
 import static com.nikoo28.graph.PlotGraphActivity.DOWNLOAD_FOLDER_NAME;
+import static com.nikoo28.graph.PlotGraphActivity.SAVE_FOLDER_NAME;
 
 public class PatientInfoActivity extends AppCompatActivity {
 
@@ -30,8 +31,6 @@ public class PatientInfoActivity extends AppCompatActivity {
 
     private Button submitButton;
     private Button downloadDbButton;
-
-    private boolean fileDownloaded = false;
 
     private String patientSex = "M";
 
@@ -46,7 +45,6 @@ public class PatientInfoActivity extends AppCompatActivity {
         patientName = (EditText) findViewById(R.id.editText_patient_info_name);
         patientAge = (EditText) findViewById(R.id.editText_patient_info_age);
         patientID = (EditText) findViewById(R.id.editText_patient_info_ID);
-
 
         View.OnClickListener submitButtonListener = new View.OnClickListener() {
 
@@ -93,7 +91,6 @@ public class PatientInfoActivity extends AppCompatActivity {
                 plotGraphIntent.putExtra("PATIENT_AGE", age);
                 plotGraphIntent.putExtra("PATIENT_ID", ID);
                 plotGraphIntent.putExtra("PATIENT_SEX", patientSex);
-                plotGraphIntent.putExtra("DOWNLOADED_CONTENT", fileDownloaded);
 
                 startActivity(plotGraphIntent);
             }
@@ -108,22 +105,28 @@ public class PatientInfoActivity extends AppCompatActivity {
                 submitButton.setEnabled(false);
                 downloadDbButton.setEnabled(false);
 
+                // Keep a copy of the file in the EXTRA folder
                 String filePath = getApplicationContext().getExternalFilesDir(null).getAbsolutePath()
                         + "/" + DOWNLOAD_FOLDER_NAME;
-
                 Log.d(TAG, "DOWNLOAD PATH = " + filePath);
-
                 File directory = new File(filePath);
                 if (!directory.exists()) {
                     directory.mkdir();
                 }
+
                 DownloadFromServer downloadFromServer = new DownloadFromServer(DB_NAME, filePath, PatientInfoActivity.this);
                 downloadFromServer.execute("");
-                fileDownloaded = true;
 
-//                patientDBHelper = new PatientDBHelper(getApplicationContext(),
-//                        patientBean.getName(), patientBean.getID(), patientBean.getAge(), patientBean.getSex(),
-//                        DOWNLOAD_FOLDER_NAME);
+
+                // Over-write the existing file if any on the filesystem, to ensure updated values
+                String overwriteFilePath = getApplicationContext().getExternalFilesDir(null).getAbsolutePath()
+                        + "/" + SAVE_FOLDER_NAME;
+                File overwriteDirectory = new File(overwriteFilePath);
+                if (!overwriteDirectory.exists()) {
+                    overwriteDirectory.mkdir();
+                }
+                DownloadFromServer overwriteExistingFile = new DownloadFromServer(DB_NAME, overwriteFilePath, PatientInfoActivity.this);
+                overwriteExistingFile.execute("");
             }
         });
     }

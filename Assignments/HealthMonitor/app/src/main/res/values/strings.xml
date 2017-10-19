@@ -26,5 +26,4 @@
     <string name="plot_graph_info">Stop the Graph to enable UPLOAD DB</string>
     <string name="plot_graph_resume_vitals">Press RUN to resume monitoring Vitals</string>
 
-
 </resources>

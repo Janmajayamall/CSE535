@@ -66,7 +66,6 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
     private int startPoint = 0;
     private boolean isVitalMeasuring = true;
     private boolean isReadyForNextSet;
-    private boolean useDownloadedInformation = false;
 
     // Accelerometer members
     private SensorManager sensorManager;
@@ -127,7 +126,6 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
                 int age = patientInfoIntent.getIntExtra("PATIENT_AGE", 0);
                 int id = patientInfoIntent.getIntExtra("PATIENT_ID", 0);
                 String sex = patientInfoIntent.getStringExtra("PATIENT_SEX");
-                useDownloadedInformation = patientInfoIntent.getBooleanExtra("DOWNLOADED_CONTENT", false);
 
                 patientBean = new Patient(name, age, id, sex);
             }
@@ -152,9 +150,6 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
         String saveFilePath = getApplicationContext().getExternalFilesDir(null).getAbsolutePath()
                 + "/" + SAVE_FOLDER_NAME;
 
-        String downloadFilePath = getApplicationContext().getExternalFilesDir(null).getAbsolutePath()
-                + "/" + DOWNLOAD_FOLDER_NAME;
-
         Log.d(TAG, "SAVE PATH = " + saveFilePath);
 
         File directory = new File(saveFilePath);
@@ -162,17 +157,10 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
             directory.mkdir();
         }
 
-        File downloadedFile = new File(downloadFilePath + DB_NAME);
-
         // Get db information from patient bean
-        if (useDownloadedInformation && downloadedFile.exists()) {
-            patientDBHelper = new PatientDBHelper(getApplicationContext(),
-                    patientBean.getName(), patientBean.getID(), patientBean.getAge(), patientBean.getSex(),
-                    DOWNLOAD_FOLDER_NAME);
-        } else
-            patientDBHelper = new PatientDBHelper(getApplicationContext(),
-                    patientBean.getName(), patientBean.getID(), patientBean.getAge(), patientBean.getSex(),
-                    SAVE_FOLDER_NAME);
+        patientDBHelper = new PatientDBHelper(getApplicationContext(),
+                patientBean.getName(), patientBean.getID(), patientBean.getAge(), patientBean.getSex(),
+                SAVE_FOLDER_NAME);
 
         List<Accelerometer> accelerometerBeanHistory = null;
 
