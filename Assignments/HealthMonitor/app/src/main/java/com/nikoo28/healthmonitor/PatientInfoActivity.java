@@ -82,7 +82,7 @@ public class PatientInfoActivity extends AppCompatActivity {
                     return;
                 }
 
-                String name = patientName.getText().toString();
+                String name = patientName.getText().toString().replaceAll("\\s+", "_");
                 int age = Integer.parseInt(patientAge.getText().toString());
                 int ID = Integer.parseInt(patientID.getText().toString());
 

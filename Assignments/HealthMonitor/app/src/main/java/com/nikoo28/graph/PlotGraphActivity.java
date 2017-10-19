@@ -42,7 +42,7 @@ public class PlotGraphActivity extends AppCompatActivity implements SensorEventL
     private static final long ACCELEROMETER_FREQUENCY = 1000;
     public static final String DOWNLOAD_FOLDER_NAME = "CSE535_ASSIGNMENT2_Extra/";
     public static final String SAVE_FOLDER_NAME = "CSE535_ASSIGNMENT2/";
-    public static final String DB_NAME = "GROUP9.db";
+    public static final String DB_NAME = "HEALTH_MONITOR_GROUP9.db";
 
     private TextView patientName;
     private TextView patientAge;
