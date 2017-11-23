@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">BrainNet</string>
+
+    <!-- Splash screen -->
+    <string name="thought_id_title">Thought ID</string>
+    <string name="login_button">CLICK HERE TO LOGIN</string>
+</resources>
