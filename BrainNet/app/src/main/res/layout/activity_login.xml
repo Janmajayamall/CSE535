@@ -23,17 +23,28 @@
         app:textColor="@android:color/white"/>
 
     <TextView
-        android:id="@+id/textView_splash_title"
+        android:id="@+id/textView_login_close_eyes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:clickable="false"
         android:gravity="center|top"
-        android:text="Close your eyes and relax"
+        android:text="@string/login_close_your_eyes_and_relax"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#FFFFFF"
         android:textSize="@dimen/login_close_eyes"
         android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/button_view_results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:clickable="false"
+        android:background="@drawable/buttonshape"
+        android:text="@string/login_view_results"
+        android:visibility="gone"/>
 
 </RelativeLayout>

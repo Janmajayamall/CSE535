@@ -26,7 +26,7 @@
         android:layout_centerHorizontal="true"
         android:clickable="false"
         android:gravity="center|top"
-        android:text="@string/thought_id_title"
+        android:text="@string/splash_screen_thought_id_title"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#FFFFFF"
         android:textSize="@dimen/splash_title_size"
@@ -40,6 +40,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/splash_button_margin_bottom"
         android:background="@drawable/buttonshape"
-        android:text="@string/login_button" />
+        android:text="@string/splash_screen_login_button" />
 
 </RelativeLayout>
