@@ -7,5 +7,5 @@
 
     <!-- Login Screen -->
     <string name="login_view_results">View results</string>
-    <string name="login_close_your_eyes_and_relax">Close your eyes and relax</string>
+    <string name="login_close_your_eyes_and_relax">Close your\neyes and \nrelax.</string>
 </resources>

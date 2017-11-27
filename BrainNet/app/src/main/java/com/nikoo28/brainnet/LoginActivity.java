@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView;
 import com.nikoo28.server.UploadToServer;
+import com.nineoldandroids.animation.ObjectAnimator;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         animatedCircleLoadingView = (AnimatedCircleLoadingView) findViewById(R.id.circle_loading_view);
         closeAndRelax = (TextView) findViewById(R.id.textView_login_close_eyes);
         viewResults = (Button) findViewById(R.id.button_view_results);
+        viewResults.setAlpha(0);
 
         startLoading();
         startPercentMockThread();
@@ -60,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startLoading() {
-        animatedCircleLoadingView.startDeterminate();
+        animatedCircleLoadingView.startIndeterminate();
     }
 
     private void copyInputStreamToFile(InputStream in, File file) {
@@ -101,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                         Thread.sleep(65);
                         changePercent(i);
                     }
+                    animatedCircleLoadingView.stopOk();
                     changeVisibilityOfButtons();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -115,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 closeAndRelax.setVisibility(View.GONE);
-                viewResults.setVisibility(View.VISIBLE);
+                viewResults.animate().alpha(1.0f).setDuration(2000).start();
             }
         });
     }
