@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView;
 import com.nikoo28.server.UploadToServer;
-import com.nineoldandroids.animation.ObjectAnimator;
 
 import java.io.File;
 import java.io.FileOutputStream;
