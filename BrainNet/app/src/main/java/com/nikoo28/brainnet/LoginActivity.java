@@ -11,10 +11,10 @@ import com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView;
 import com.nikoo28.server.UploadToServer;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+
+import static com.nikoo28.util.CopyFileStreamToFile.copyInputStreamToFile;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -22,13 +22,17 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextView closeAndRelax;
     private Button viewResults;
+    private static String SERVER;
 
-    public static final String UPLOAD_FILE = "S001R14.edf";
+    public static final String UPLOAD_FILE = "authentication_signal_S7.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Intent mainActivityIntent = getIntent();
+        SERVER = mainActivityIntent.getStringExtra("SERVER");
 
         animatedCircleLoadingView = (AnimatedCircleLoadingView) findViewById(R.id.circle_loading_view);
         closeAndRelax = (TextView) findViewById(R.id.textView_login_close_eyes);
@@ -39,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         startPercentMockThread();
 
         try {
-            UploadToServer uploadToServer = new UploadToServer();
+            UploadToServer uploadToServer = new UploadToServer(SERVER);
             InputStream inputStream = getAssets().open(UPLOAD_FILE);
             String uploadFile = getApplicationContext().getExternalFilesDir(null).getAbsolutePath()
                     + "/" + "brainData";
@@ -55,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent resultActivityIntent = new Intent(LoginActivity.this, ResultActivity.class);
+                resultActivityIntent.putExtra("SERVER", SERVER);
                 startActivity(resultActivityIntent);
             }
         });
@@ -62,34 +67,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void startLoading() {
         animatedCircleLoadingView.startIndeterminate();
-    }
-
-    private void copyInputStreamToFile(InputStream in, File file) {
-        OutputStream out = null;
-
-        try {
-            out = new FileOutputStream(file);
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0) {
-                out.write(buf, 0, len);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            // Ensure that the InputStreams are closed even if there's an exception.
-            try {
-                if (out != null) {
-                    out.close();
-                }
-
-                // If you want to close the "in" InputStream yourself then remove this
-                // from here but ensure that you close it yourself eventually.
-                in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private void startPercentMockThread() {
