@@ -33,6 +33,12 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent mainActivityIntent = getIntent();
         SERVER = mainActivityIntent.getStringExtra("SERVER");
+        final String server_string = mainActivityIntent.getStringExtra("SERVER_STRING");
+
+        final long fog_round_trip = mainActivityIntent.getLongExtra("FOG_ROUND_TRIP", 0);
+        final long remote_round_trip = mainActivityIntent.getLongExtra("REMOTE_ROUND_TRIP", 0);
+        final long fog_computation = mainActivityIntent.getLongExtra("FOG_COMPUTATION", 0);
+        final long remote_computation = mainActivityIntent.getLongExtra("REMOTE_COMPUTATION", 0);
 
         animatedCircleLoadingView = (AnimatedCircleLoadingView) findViewById(R.id.circle_loading_view);
         closeAndRelax = (TextView) findViewById(R.id.textView_login_close_eyes);
@@ -60,6 +66,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent resultActivityIntent = new Intent(LoginActivity.this, ResultActivity.class);
                 resultActivityIntent.putExtra("SERVER", SERVER);
+                resultActivityIntent.putExtra("FOG_ROUND_TRIP", fog_round_trip);
+                resultActivityIntent.putExtra("REMOTE_ROUND_TRIP", remote_round_trip);
+                resultActivityIntent.putExtra("FOG_COMPUTATION", fog_computation);
+                resultActivityIntent.putExtra("REMOTE_COMPUTATION", remote_computation);
+                resultActivityIntent.putExtra("SERVER_STRING", server_string);
                 startActivity(resultActivityIntent);
             }
         });

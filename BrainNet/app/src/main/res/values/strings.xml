@@ -3,9 +3,9 @@
 
     <!-- Splash screen -->
     <string name="splash_screen_thought_id_title">Thought ID</string>
-    <string name="splash_screen_login_button">CLICK HERE TO LOGIN</string>
+    <string name="splash_screen_login_button">START RECORDING</string>
 
     <!-- Login Screen -->
-    <string name="login_view_results">View results</string>
+    <string name="login_view_results">LOGIN NOW</string>
     <string name="login_close_your_eyes_and_relax">Close your\neyes and \nrelax.</string>
 </resources>

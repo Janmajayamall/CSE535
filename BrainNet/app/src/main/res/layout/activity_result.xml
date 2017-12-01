@@ -20,4 +20,11 @@
         android:textColor="#FFFFFF"
         android:textSize="@dimen/result_text_size" />
 
+    <TextView
+        android:id="@+id/textView_result_metrics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#d7ccc8"
+        android:layout_alignParentBottom="true" />
+
 </RelativeLayout>
